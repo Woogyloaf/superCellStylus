@@ -32,7 +32,7 @@ var customOpts = {
   debug: true
 };
 var opts = assign({}, watchify.args, customOpts);
-var b = watchify(browserify(opts)); 
+var b = watchify(browserify(opts));
 
 // add transformations here
 b.transform("babelify", {presets: ["es2015", "react"]});
@@ -91,7 +91,9 @@ gulp.task('html', function() {
 // ////////////////////////////////////////////////
 gulp.task('jade', function() {
   return gulp.src('src/jade/*.jade')
-    .pipe(jade())
+    .pipe(jade({
+      pretty: true
+    }))
     .pipe(gulp.dest('public/jade'));
 });
 
@@ -112,7 +114,7 @@ gulp.task('jade', function() {
 //       .pipe(autoprefixer({
 //               browsers: ['last 3 versions'],
 //               cascade: false
-//           })) 
+//           }))
 //     .pipe(sourcemaps.write('../maps'))
 //     .pipe(gulp.dest('public/css'))
 //     .pipe(browserSync.reload({stream:true}));
@@ -125,7 +127,7 @@ gulp.task('jade', function() {
 gulp.task('styles', function() {
   gulp.src('src/stylus/style.styl')
     .pipe(sourcemaps.init())
-       .pipe(stylus({compress: false })) 
+       .pipe(stylus({compress: false }))
        // .pipe(sass({outputStyle: 'compressed'}))
       // .on('error', errorlog)
       .on('error', gutil.log.bind(gutil, gutil.colors.red(
@@ -136,7 +138,7 @@ gulp.task('styles', function() {
       .pipe(autoprefixer({
               browsers: ['last 3 versions'],
               cascade: false
-          })) 
+          }))
     .pipe(sourcemaps.write('../maps'))
     .pipe(gulp.dest('public/css'))
     .pipe(browserSync.reload({stream:true}));
@@ -150,7 +152,7 @@ gulp.task('styles', function() {
 // ///////////////////////////////////////////////
 
 gulp.task('sprite', function() {
-    var spriteData = 
+    var spriteData =
         gulp.src('./src/images/sprite/*.*') // путь, откуда берем картинки для спрайта
             .pipe(spritesmith({
                 imgName: 'sprite.png',
@@ -194,4 +196,3 @@ gulp.task('watch', function() {
 
 
 gulp.task('default', ['jade','sprite','imagemin','js', 'styles', 'browserSync', 'watch']);
-
